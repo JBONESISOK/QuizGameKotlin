@@ -4,7 +4,6 @@ import io.ktor.client.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
-import kotlinx.coroutines.awaitAll
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
@@ -32,16 +31,16 @@ suspend fun getListQuestions(count: Int): List<Question> {
         val questionAPI: QuestionAPI = getQuestion()
         val results = questionAPI.results[0]
         val choices = (results["incorrect_answers"]!!.jsonArray + results["correct_answer"]).shuffled()
-        val newHashMap = hashMapOf<Char, String>()
+        val choicesMap = hashMapOf<Char, String>()
         var index = 0
         for (character in 'A'..'D') {
-            newHashMap[character] = choices[index++].toString()
+            choicesMap[character] = choices[index++].toString()
         }
-        val answer: Char = newHashMap.filterValues { it == results["correct_answer"].toString() }.keys.first()
+        val answer: Char = choicesMap.filterValues { it == results["correct_answer"].toString() }.keys.first()
         questionList.add(
             Question(
                 results["question"].toString(),
-                answer, newHashMap
+                answer, choicesMap
             )
         )
     }

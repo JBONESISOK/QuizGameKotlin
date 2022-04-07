@@ -43,6 +43,7 @@ val Game = FC<Props> {
             currentQuestionNum++
         } else {
             alert("Congratulations you completed the game!")
+            alert("You got $numCorrect correct! Nice Job!")
             alert("Here's what you got wrong $incorrectList")
         }
     }
