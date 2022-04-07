@@ -12,12 +12,18 @@ data class Question(
     val question: String,
     val answer: Char,
     val choices: HashMap<Char, String>
-)
+) {
+    override fun toString(): String {
+        return "$question Answer: $answer: ${choices[answer]}\n"
+    }
+}
+
 val client = HttpClient {
     install(JsonFeature) {
         serializer = KotlinxSerializer()
     }
 }
+
 @Serializable
 data class QuestionAPI(val response_code: Int, val results: List<JsonObject>)
 

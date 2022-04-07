@@ -14,6 +14,7 @@ import react.useState
 
 private val scope = MainScope()
 external fun alert(msg: String)
+external fun prompt(msg: String)
 
 val Game = FC<Props> {
     val incorrectList: MutableList<Question> by useState(mutableListOf())
@@ -24,7 +25,9 @@ val Game = FC<Props> {
 
     useEffectOnce {
         scope.launch {
-            questionList = getListQuestions(5)
+            val numOfQuestions = prompt("How many questions do you want? ").toString().toIntOrNull()
+            if(numOfQuestions == null) alert("You did not enter a number. Default is 5 questions.")
+            questionList = getListQuestions(numOfQuestions ?: 5)
         }
     }
 
@@ -43,7 +46,7 @@ val Game = FC<Props> {
             currentQuestionNum++
         } else {
             alert("Congratulations you completed the game!")
-            alert("You got $numCorrect correct! Nice Job!")
+            alert("You got $numCorrect correct!")
             alert("Here's what you got wrong $incorrectList")
         }
     }
