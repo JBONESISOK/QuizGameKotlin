@@ -3,12 +3,12 @@ package website
 import components.questionBox
 import components.submitButton
 import kotlinx.browser.document
-import kotlinx.coroutines.*
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import org.w3c.dom.HTMLInputElement
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.p
 import react.useEffectOnce
 import react.useState
 
@@ -34,7 +34,6 @@ val Game = FC<Props> {
     fun addIncorrectAnswer() {
         val newList = incorrectList
         newList.add(questionList[currentQuestionNum])
-        println(incorrectList)
     }
 
     fun continueGame() {
@@ -56,7 +55,7 @@ val Game = FC<Props> {
             currentAnswer = answer
         }
 
-        override fun submitAnswer(answer: Char?) {
+        override fun submitAnswer() {
             when (currentAnswer) {
                 null -> alert("You need to select a answer")
                 questionList[currentQuestionNum].answer -> {
@@ -79,7 +78,6 @@ val Game = FC<Props> {
             }
             submitButton {
                 gameHandler = gameHandlerObj
-                answer = currentAnswer
             }
         }
     }

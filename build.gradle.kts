@@ -1,14 +1,13 @@
 plugins {
     kotlin("multiplatform") version "1.6.10"
     application
-    kotlin("plugin.serialization") version "1.6.10"
+    kotlin("plugin.serialization") version "1.6.20"
 }
 
 group = "me.origi"
 version = "1.0-SNAPSHOT"
 
 repositories {
-    jcenter()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
 }
