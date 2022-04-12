@@ -10,7 +10,7 @@ external interface SubmitButtonProps : Props {
     var gameHandler: GameHandler
 }
 
-val submitButton = FC<SubmitButtonProps>  { props ->
+val submitButton = FC<SubmitButtonProps> { props ->
     div {
         button {
             onClick = {

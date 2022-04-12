@@ -9,6 +9,7 @@ import org.w3c.dom.HTMLInputElement
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
+import react.dom.html.ReactHTML.p
 import react.useEffectOnce
 import react.useState
 
@@ -26,7 +27,7 @@ val Game = FC<Props> {
     useEffectOnce {
         scope.launch {
             val numOfQuestions = prompt("How many questions do you want? ").toString().toIntOrNull()
-            if(numOfQuestions == null) alert("You did not enter a number. Default is 5 questions.")
+            if (numOfQuestions == null) alert("You did not enter a number. Default is 5 questions.")
             questionList = getListQuestions(numOfQuestions ?: 5)
         }
     }
@@ -71,13 +72,17 @@ val Game = FC<Props> {
         }
     }
     div {
-        if(questionList.isNotEmpty()) {
+        if (questionList.isNotEmpty()) {
             questionBox {
                 questionObj = questionList[currentQuestionNum]
                 gameHandler = gameHandlerObj
             }
             submitButton {
                 gameHandler = gameHandlerObj
+            }
+        } else {
+            p {
+                +"Getting questions. Please wait"
             }
         }
     }

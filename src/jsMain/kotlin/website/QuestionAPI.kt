@@ -27,8 +27,17 @@ val client = HttpClient {
 @Serializable
 data class QuestionAPI(val response_code: Int, val results: List<JsonObject>)
 
-suspend fun getQuestion(): QuestionAPI {
-    return client.get("https://opentdb.com/api.php?amount=1&category=15&difficulty=easy&type=multiple")
+suspend fun getQuestion(): QuestionAPI =
+    client.get("https://opentdb.com/api.php?amount=1&category=15&difficulty=easy&type=multiple")
+
+
+fun bindChoices(list: List<String>): HashMap<Char, String> {
+    val choicesMap = hashMapOf<Char, String>()
+    var index = 0
+    for (character in 'A'..'D') {
+        choicesMap[character] = list[index++]
+    }
+    return choicesMap
 }
 
 suspend fun getListQuestions(count: Int): List<Question> {
@@ -36,19 +45,14 @@ suspend fun getListQuestions(count: Int): List<Question> {
     repeat(count) {
         val questionAPI: QuestionAPI = getQuestion()
         val results = questionAPI.results[0]
-        val choices = (results["incorrect_answers"]!!.jsonArray + results["correct_answer"]).shuffled()
-        val choicesMap = hashMapOf<Char, String>()
-        var index = 0
-        for (character in 'A'..'D') {
-            choicesMap[character] = choices[index++].toString()
-        }
-        val answer: Char = choicesMap.filterValues { it == results["correct_answer"].toString() }.keys.first()
-        questionList.add(
-            Question(
-                results["question"].toString(),
-                answer, choicesMap
-            )
-        )
+        val choices = (results["incorrect_answers"]!!.jsonArray + results["correct_answer"])
+            .shuffled()
+            .map { it.toString() }
+        val choicesMap = bindChoices(choices)
+        val answer: Char = choicesMap.filterValues { it == results["correct_answer"].toString() }
+            .keys.first()
+
+        questionList.add(Question(results["question"].toString(), answer, choicesMap))
     }
     return questionList.toList()
 }
