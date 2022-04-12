@@ -40,7 +40,7 @@ fun bindChoices(list: List<String>): HashMap<Char, String> {
     return choicesMap
 }
 
-suspend fun getListQuestions(count: Int): List<Question> {
+suspend fun getQuestionList(count: Int): List<Question> {
     val questionList = mutableListOf<Question>()
     repeat(count) {
         val questionAPI: QuestionAPI = getQuestion()
@@ -54,5 +54,5 @@ suspend fun getListQuestions(count: Int): List<Question> {
 
         questionList.add(Question(results["question"].toString(), answer, choicesMap))
     }
-    return questionList.toList()
+    return questionList
 }

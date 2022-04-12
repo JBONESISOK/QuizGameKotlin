@@ -28,7 +28,7 @@ val Game = FC<Props> {
         scope.launch {
             val numOfQuestions = prompt("How many questions do you want? ").toString().toIntOrNull()
             if (numOfQuestions == null) alert("You did not enter a number. Default is 5 questions.")
-            questionList = getListQuestions(numOfQuestions ?: 5)
+            questionList = getQuestionList(numOfQuestions ?: 5)
         }
     }
 
